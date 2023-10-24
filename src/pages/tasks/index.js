@@ -1,107 +1,92 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
+import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 import { AuthContext } from '@/contexts/AuthContext'
+import NavBar from '@/layouts/NavBar'
+import Modal from '@/components/Modal'
+import InputField from '@/components/InputField'
+import Select from '@/components/Select'
+import TaskCard from '@/layouts/TaskCard'
+
+const tasks = require('@/data/tasks.json');
 
 export default function TaskList() {
-  const [ showProfileMenu, setShowProfileMenu ] = useState(false)
   const { auth } = useContext(AuthContext);
-  const [ user ] = useAuthState(auth)
+  const [ user, loading ] = useAuthState(auth)
+  const { register, handleSubmit } = useForm();
   const router = useRouter()
 
-  console.log(user)
+  const [ loggedIn, setLoggedIn ] = useState(user !== null)
+  const ref = useRef();
   
   useEffect(() => {
-    if (!user) router.push('/')
-  }, [user])
+    if (!loggedIn && !loading) router.push('/')
+  }, [loggedIn])
 
-  const handleClickProfileMenu = () => {
-    setShowProfileMenu(!showProfileMenu)
+  const handleSignOut = () => {
+    auth.signOut()
+    setLoggedIn(false)
   }
   
   return (
     <div className='min-h-screen'>
-      <nav className='bg-gray-800'>
-        {/* Profile Menu Dropdown */}
-        <div className='hidden sm:block p-4'>
-          <div className='flex justify-end'>
-            <div className='relative rounded-full bg-gray-100 p-2'>
-              <button onClick={() => handleClickProfileMenu()}>
-                <span className='block align-middle h-6 w-6'>P</span>
-              </button>
+      <NavBar user={{name: user?.displayName, email: user?.email}} signOutCallback={handleSignOut}/>
 
-              { showProfileMenu && 
-                <div className='absolute right-0 z-10 mt-4 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
-                  <button 
-                    className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
-                    onClick={() => auth.signOut()}
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              } 
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Profile Menu Dropdown */}
-        <div className='sm:hidden'>
-          <div className='flex justify-end p-4'>
-            <div className='relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-100 
-              hover:bg-gray-700 hover:text-white 
-              focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
-            >
-              <button onClick={() => handleClickProfileMenu()}>
-                { 
-                  showProfileMenu ?
-                  <svg className='h-6 w-6' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor'>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
-                  </svg> :
-                  <svg className='h-6 w-6' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor'>
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5' />
-                  </svg>
-                }
-              </button>
-            </div>
-          </div>
-
-          {
-            showProfileMenu && <div className='h-0.5 bg-gray-600'/>
-          }
-          { 
-            showProfileMenu &&
-            <div className='pb-3 pt-4'>
-              <div className="flex items-center px-5">
-                <div className='rounded-full bg-gray-100 p-2'>
-                  <span className='block align-middle h-6 w-6 pl-2'>P</span>
-                </div>
-                <div className="ml-3">
-                  <div className="text-base font-medium leading-none text-white">Tom Cook</div>
-                  <div className="text-sm font-medium leading-none text-gray-400">tom@example.com</div>
-                </div>
-              </div>
-              <div className="mt-3 space-y-1 px-2">
-                <button 
-                  className='block w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
-                  onClick={() => auth.signOut()}
-                >
-                  Sign Out
-                </button>
-              </div>
-            </div>
-          }
-        </div>
-      </nav>
-
-      <header className='bg-white'>
-        <div className='px-8 py-4 text-2xl text-neutral-950'>
+      <header className='flex flex-col sm:flex-row justify-between items-center bg-white'>
+        <div className='px-8 py-4 text-2xl text-gray-900'>
           Tarefas
+        </div>
+        <div className='px-8 py-4'>
+          <Modal showBtnValue={'Criar tarefa'} title={'Nova tarefa'} actionBtnValue={'Criar tarefa'}>
+            <form className='space-y-6'>
+              <InputField
+                {...register('name')}
+                id='name'
+                label='Nome'
+                ref={ref}
+              />
+
+              <InputField
+                {...register('description')}
+                id='description'
+                label='Descrição'
+                ref={ref}
+              />
+
+              <Select
+                {...register('priority')}
+                id='priority'
+                label='Prioridade'
+                values={['higher', 'high', 'medium', 'low', 'lower']}
+              />
+
+              <InputField
+                {...register('responsible')}
+                id='responsible'
+                label='Responsável'
+                ref={ref}
+              />
+
+            </form>
+          </Modal>
         </div>
       </header>
 
-      <main className='h-screen bg-gray-100 text-neutral-950 px-8 py-4'>
-        Main Content
+      <main className='flex flex-wrap content-start justify-center sm:justify-start h-screen bg-gray-100 text-neutral-950 px-8 py-4'>
+        {tasks.map((task) => {
+          return (
+            <TaskCard 
+              title={task.title}
+              description={task.description}
+              priority={task.priority}
+              done={task.done}
+              created-by={task.createdBy}
+              responsible={task.responsible}
+            />
+          )
+        })}
       </main>
     </div>
   )

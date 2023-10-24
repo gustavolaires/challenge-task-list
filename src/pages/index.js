@@ -33,7 +33,7 @@ export default function Home() {
   }
 
   return (
-    <main className='flex flex-col items-center h-screen bg-gray-300 pb-10'>
+    <main className='flex flex-col items-center min-h-screen bg-gray-300 pb-10'>
       <div className='mt-10'>
         <h2 className='text-2xl font-bold tracking-tight text-gray-900 leading-6'>
           Sign in to tasker
@@ -41,7 +41,7 @@ export default function Home() {
       </div>
 
       <div className='bg-gray-100 mt-10 px-6 py-8 w-full sm:rounded-md sm:max-w-sm '>
-        <form className='space-y-6' onSubmit={handleSubmit(handleSignIn)}>
+        <form className='space-y-6' onSubmit={(handleSubmit(handleSignIn))}>
             <InputField
               {...register('email')}
               id='email'
@@ -62,7 +62,7 @@ export default function Home() {
               <span className='text-gray-50'>Login</span>
             </Button>
 
-          <div className='flex flex-row justify-between items-center relative pt-6'>
+          <div className='flex flex-row justify-between items-center relative py-2'>
             <span className='block w-full h-0.5 rounded-xl bg-gray-300'/>
             <span className='block mx-4 whitespace-nowrap text-sm font-medium text-gray-900 leading-6'>
               Or continue with

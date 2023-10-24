@@ -1,7 +1,7 @@
 import React from "react"
 
 const InputField = React.forwardRef(({
-  label = 'Input Field Label',
+  label = 'Input label',
   type = 'text',
   placeholder = '',
   name = '',
