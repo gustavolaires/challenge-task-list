@@ -11,10 +11,10 @@ import TaskCard from '@/layouts/TaskCard'
 
 const priorities = [
   {value: '2', label: 'Muito alta', borderColor: 'border-red-600', bgColor: 'bg-red-600', textColor: 'text-white'},
-  {value: '1', label: 'Alta', borderColor: 'border-yellow-600', bgColor: 'bg-yellow-600', textColor: 'text-white'},
+  {value: '1', label: 'Alta', borderColor: 'border-yellow-600', bgColor: 'bg-yellow-600', textColor: 'text-gray-900'},
   {value: '0', label: 'Normal', borderColor: 'border-gray-400', bgColor: 'bg-gray-600', textColor: 'text-white'},
-  {value: '-1', label: 'Baixa', borderColor: 'border-blue-600', bgColor: 'bg-blue-600', textColor: 'text-gray-900'},
-  {value: '-2', label: 'Muito baixa', borderColor: 'border-sky-600', bgColor: 'bg-sky-600', textColor: 'text-white'},
+  {value: '-1', label: 'Baixa', borderColor: 'border-blue-600', bgColor: 'bg-blue-600', textColor: 'text-white'},
+  {value: '-2', label: 'Muito baixa', borderColor: 'border-cyan-600', bgColor: 'bg-cyan-300', textColor: 'text-gray-900'},
 ]
 
 export default function TaskList() {
@@ -39,24 +39,6 @@ export default function TaskList() {
 
   const handleSignOut = () => {
     auth.signOut()
-  }
-
-  const listAllUsers = (nextPageToken) => {
-    // List batch of users, 1000 at a time.
-    auth
-      .listUsers(1000, nextPageToken)
-      .then((listUsersResult) => {
-        listUsersResult.users.forEach((userRecord) => {
-          console.log('user', userRecord.toJSON());
-        });
-        if (listUsersResult.pageToken) {
-          // List next batch of users.
-          listAllUsers(listUsersResult.pageToken);
-        }
-      })
-      .catch((error) => {
-        console.log('Error listing users: ', error);
-      });
   }
 
   const loadTasks = () => {

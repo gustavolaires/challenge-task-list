@@ -52,14 +52,14 @@ export default function TaskCard({
       {/* Header */}
       <div className={`flex justify-between flex-nowrap bg-gray-800 border-l-8 px-4 py-2 text-gray-100 w-full ${getPriorityColor(priority)}`}>
 
-        <div className='flex flex-row flex-nowrap w-5/6 sm:w-full'>
+        <div className='flex flex-row flex-nowrap w-5/6 sm:w-full' onClick={() => {setExpanded(!expanded)}}>
           { done &&
-            <div className='flex items-center text-green-200'>
+            <div className='flex items-center text-green-200 sm:mr-2'>
               <CheckCircleIcon className='h-6 w-6'/> 
             </div>
           }
 
-          <button onClick={() => {setExpanded(!expanded)}} className='rounded-md p-1 text-gray-100 hover:bg-gray-700 hover:text-white'>
+          <button className='rounded-md p-1 text-gray-100 hover:bg-gray-700 hover:text-white' onClick={() => {setExpanded(!expanded)}}>
             { 
               !expanded ? (<ChevronDownIcon className='h-6 w-6'/>) : (<ChevronUpIcon className='h-6 w-6'/>)
             }
@@ -69,7 +69,9 @@ export default function TaskCard({
         </div>
 
 
-        <button className='p-1 rounded-md text-gray-100 hover:bg-gray-700 hover:text-white'>
+        <button onClick={() => {}}
+          className='p-1 rounded-md text-gray-100 hover:bg-gray-700 hover:text-white z-10'
+        >
           <EllipsisVerticalIcon className='h-6 w-6'/>
         </button>
       </div>
@@ -82,7 +84,7 @@ export default function TaskCard({
           <div className='flex border-gray-400 border-b-2 pb-2 flex-row justify-between'>
             <span className='break-words text-sm font-medium text-gray-900 leading-6 pb-0.5'>Prioridade:</span>
 
-            <span className={`break-words whitespace-nowrap rounded-full px-4 leading-6 w-max ${getPriorityTagColors(priority)}`}>
+            <span className={`break-words whitespace-nowrap rounded-full leading-6 px-4  w-max ${getPriorityTagColors(priority)}`}>
               {getPrioritLabel(priority)}
             </span>
           </div>
@@ -101,7 +103,7 @@ export default function TaskCard({
             <span className='block break-words text-sm font-medium text-gray-900 leading-6 pb-1'>Descrição:</span>
 
             <div className=' bg-white p-2 rounded-md'>
-              <p className='block break-words overflow-x-hidden leading-6 font-medium max-w-full max-h-32'>
+              <p className='block break-words overflow-x-hidden leading-6 font-medium text-base max-w-full max-h-32'>
                 {description}
               </p>
             </div>
@@ -111,7 +113,7 @@ export default function TaskCard({
           <div className='flex flex-col border-gray-400 border-b-2 pb-2 sm:flex-row sm:justify-between'>
             <span className='block break-words text-sm font-medium text-gray-900 leading-6 pb-0.5'>Criado por:</span>
 
-            <span className='block break-words overflow-hidden whitespace-nowrap leading-6 font-medium max-w-full'>
+            <span className='block break-words overflow-hidden whitespace-nowrap leading-6 font-medium text-sm max-w-full'>
               {createdBy?.displayName}
             </span>
           </div>
@@ -121,9 +123,9 @@ export default function TaskCard({
             <span className='block break-words text-sm font-medium text-gray-900 leading-6 pb-0.5'>Criado em:</span>
 
             <div className='flex flex-row flex-nowrap'>
-              <span className='block  leading-6 font-medium'>{getDate(createdAt)}</span>
+              <span className='block  leading-6 font-medium text-sm'>{getDate(createdAt)}</span>
 
-              <span className='hidden sm:block leading-6 font-medium ml-2'>{getTime(createdAt)}</span>
+              <span className='hidden sm:block leading-6 font-medium text-sm ml-2'>{getTime(createdAt)}</span>
             </div>
           </div>
         </div>

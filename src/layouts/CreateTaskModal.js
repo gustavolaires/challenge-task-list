@@ -92,18 +92,18 @@ export default function CreateTaskModal({
                                 <label className='block text-sm font-medium text-gray-900 leading-6'>
                                   Título <span className='text-red-600'>*</span>
                                 </label>
-                                <input {...register("title", { required: true })} id="title" required
+                                <input {...register("title", { required: true })} id="title"  placeholder='Título da tarefa' required
                                     className='block w-full text-gray-900 leading-6 rounded-md p-2 mt-0.5
-                                    placeholder:text-gray-400 ring-1 ring-inset ring-gray-300
+                                    placeholder:text-gray-400 placeholder:text-sm ring-1 ring-inset ring-gray-300
                                     focus:ring-2 focus:ring-inset focus:ring-indigo-400'
                                 />
                               </div>
 
                               <div>
                                 <label className='block text-sm font-medium text-gray-900 leading-6'>Descrição</label>
-                                <input {...register("description")} id="description"
+                                <textarea {...register("description")} id="description" placeholder='Descrição da tarefa'
                                     className='block w-full text-gray-900 leading-6 rounded-md p-2 mt-0.5
-                                    placeholder:text-gray-400 ring-1 ring-inset ring-gray-300
+                                    placeholder:text-gray-400 placeholder:text-sm ring-1 ring-inset ring-gray-300
                                     focus:ring-2 focus:ring-inset focus:ring-indigo-400'
                                 />
                               </div>
@@ -128,11 +128,11 @@ export default function CreateTaskModal({
                                 <select {...register("responsible")} id='responsible' defaultValue=''
                                   className='block w-full rounded-md leading-6 font-normal p-2 bg-white ring-1 ring-inset ring-gray-300'
                                 >
-                                  <option key={0} value=''></option>
+                                  <option key={0} value='' className=''></option>
                                   {
                                     users.map((user, index) => {
                                       return (
-                                        <option key={index + 1} className='font-normal' value={user.uid}>
+                                        <option key={index + 1} className='font-normal text-sm' value={user.uid}>
                                           {`${user?.displayName} (${user?.email})`}
                                         </option>
                                       )
