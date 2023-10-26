@@ -2,17 +2,10 @@ import { useState } from "react"
 import { useForm } from 'react-hook-form'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
-const priority_values = [
-  {value: 'higher', label: 'Muito alta'},
-  {value: 'high', label: 'Alta'},
-  {value: 'medium', label: 'Normal'},
-  {value: 'low', label: 'Baixa'},
-  {value: 'lower', label: 'Muito baixa'},
-]
-
 export default function CreateTaskModal({
   createTaskCallback = () => {},
   user = null,
+  priorities = [],
 }) {
   const { register, handleSubmit, reset } = useForm();
   const [ showModal, setShowModal ] = useState(false)
@@ -63,9 +56,9 @@ export default function CreateTaskModal({
   return(
     <>
       <button onClick={openModal}
-        className='inline-flex justify-center rounded-md bg-white px-3 py-2 hover:bg-gray-50 sm:mt-0'
+        className='inline-flex justify-center rounded-md bg-white px-3 py-2 hover:bg-gray-50 sm:mt-0 ring-1 ring-inset ring-gray-300'
       >
-        <span className={`font-normal text-gray-900 text-lg`}>Criar Tarefa</span>
+        <span className={`font-normal text-gray-900 text-base`}>Criar Tarefa</span>
       </button>
 
       {
@@ -119,11 +112,11 @@ export default function CreateTaskModal({
                                 <label className='block text-sm font-medium text-gray-900 leading-6'>
                                   Prioridade <span className='text-red-600'>*</span>
                                 </label>
-                                <select {...register("priority")} id='priority'
+                                <select {...register("priority")} id='priority' defaultValue={0}
                                   className='block w-full rounded-md leading-6 font-normal p-2 bg-white ring-1 ring-inset ring-gray-300'
                                 >
                                   {
-                                    priority_values.map((priority, index) => {
+                                    priorities.map((priority, index) => {
                                       return <option key={index} className='font-normal' value={priority.value}>{priority.label}</option>
                                     })
                                   }

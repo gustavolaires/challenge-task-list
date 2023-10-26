@@ -9,6 +9,14 @@ import NavBar from '@/layouts/NavBar'
 import CreateTaskModal from '@/layouts/CreateTaskModal'
 import TaskCard from '@/layouts/TaskCard'
 
+const priorities = [
+  {value: '2', label: 'Muito alta', borderColor: 'border-red-600', bgColor: 'bg-red-600', textColor: 'text-white'},
+  {value: '1', label: 'Alta', borderColor: 'border-yellow-600', bgColor: 'bg-yellow-600', textColor: 'text-white'},
+  {value: '0', label: 'Normal', borderColor: 'border-gray-400', bgColor: 'bg-gray-600', textColor: 'text-white'},
+  {value: '-1', label: 'Baixa', borderColor: 'border-blue-600', bgColor: 'bg-blue-600', textColor: 'text-gray-900'},
+  {value: '-2', label: 'Muito baixa', borderColor: 'border-sky-600', bgColor: 'bg-sky-600', textColor: 'text-white'},
+]
+
 export default function TaskList() {
   const { database } = useContext(DatabaseContext)
   const { auth } = useContext(AuthContext);
@@ -65,10 +73,20 @@ export default function TaskList() {
             priority: value.priority,
             done: value.done,
             responsible: value.responsible ? value.responsible : null,
-            createdBy: value.createdBy ? value.createdBy : null
+            createdBy: value.createdBy ? value.createdBy : null,
+            createdAt: value.timestamp || 0
           }
         })
-  
+
+        taskList.sort((a, b) => {
+            const aIsDone = a.done ? 1 : -1
+            const bIsDone = b.done ? 1 : -1
+
+            return b.priority - a.priority || aIsDone - bIsDone || a.timestamp - b.timestamp
+          })
+
+        console.log(taskList)
+        console.log()
         setTasks(taskList)
       } 
     })
@@ -85,7 +103,8 @@ export default function TaskList() {
         displayName: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-      }
+      },
+      timestamp: Date.now()
     }
 
     console.log(taskData)
@@ -112,11 +131,11 @@ export default function TaskList() {
               Tarefas
             </div>
             <div className='px-8 py-4'>
-              <CreateTaskModal createTaskCallback={handleCreateTask} user={user}/>
+              <CreateTaskModal createTaskCallback={handleCreateTask} user={user} priorities={priorities}/>
             </div>
           </header>
 
-          <main className='flex flex-wrap content-start justify-center sm:justify-start h-screen bg-gray-100 text-neutral-950 px-8 py-4'>
+          <main className='flex flex-wrap content-start justify-center sm:justify-start h-screen bg-gray-100 text-neutral-950 px-2 sm:px-8 py-4'>
             {tasks.map((task) => {
               return (
                 <TaskCard
@@ -126,8 +145,10 @@ export default function TaskList() {
                   description={task.description}
                   priority={task.priority}
                   done={task.done}
-                  created-by={task.createdBy}
+                  createdBy={task.createdBy}
+                  createdAt={task.createdAt}
                   responsible={task.responsible}
+                  priorities={priorities}
                 />
               )
             })}
