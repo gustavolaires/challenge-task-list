@@ -23,7 +23,7 @@ export default function NavBar({
         <div className='flex justify-end'>
           <div className='relative rounded-full bg-gray-100'>
             {/* Button */}
-            <button onClick={() => handleClickProfileMenu()}>
+            <button onClick={() => handleClickProfileMenu()} onBlur={() => setShowProfileMenu(false)}>
               <span className='flex justify-center items-center font-semibold text-xl w-6 h-6 m-2'>{firstLetterCapitalized}</span>
             </button>
 

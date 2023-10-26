@@ -1,7 +1,15 @@
 import { useState } from "react"
 import moment from "moment/moment"
 
-import { EllipsisVerticalIcon, ChevronDownIcon, ChevronUpIcon, CheckCircleIcon } from "@heroicons/react/24/solid"
+import { 
+  EllipsisVerticalIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid"
 
 export default function TaskCard({
   title = 'Card Title',
@@ -14,6 +22,12 @@ export default function TaskCard({
   priorities = [],
 }) {
   const [ expanded, setExpanded ] = useState(false)
+  const [ showMenu, setShowMenu ] = useState(false)
+
+  const getTaskTitleColor = (done) => {
+    if (done) return 'bg-green-900'
+    return 'bg-gray-800'
+  }
 
   const getPriorityColor = (priority) => {
     const selectedPriority = priorities.find(e => e.value === priority)
@@ -50,7 +64,9 @@ export default function TaskCard({
   return (
     <div className='pb-2 w-full'>
       {/* Header */}
-      <div className={`flex justify-between flex-nowrap bg-gray-800 border-l-8 px-4 py-2 text-gray-100 w-full ${getPriorityColor(priority)}`}>
+      <div className={`flex justify-between flex-nowrap border-l-8 px-4 py-2 text-gray-100 w-full 
+        ${getTaskTitleColor(done)} ${getPriorityColor(priority)}`}
+      >
 
         <div className='flex flex-row flex-nowrap w-5/6 sm:w-full' onClick={() => {setExpanded(!expanded)}}>
           { done &&
@@ -69,11 +85,53 @@ export default function TaskCard({
         </div>
 
 
-        <button onClick={() => {}}
-          className='p-1 rounded-md text-gray-100 hover:bg-gray-700 hover:text-white z-10'
-        >
-          <EllipsisVerticalIcon className='h-6 w-6'/>
-        </button>
+        <div className='relative'>
+          <button onClick={() => {setShowMenu(!showMenu)}} onBlur={() => setShowMenu(false)}
+            className='p-1 rounded-md text-gray-100 hover:bg-gray-700 hover:text-white'
+          >
+            <EllipsisVerticalIcon className='h-6 w-6'/>
+          </button>
+
+          {/* Menu */}
+          { showMenu && 
+              <div className='absolute right-0 z-10 mt-1 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
+                <button 
+                  className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
+                >
+                  {
+                    done ? (
+                      <>
+                        <XCircleIcon className='inline-block h-6 w-6'/>
+                        <span className='ml-2'>Reabrir tarefa</span>
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircleIcon className='inline-block h-6 w-6 text-lime-500'/>
+                        <span className='ml-2'>Concluir tarefa</span>
+                      </>
+                    )
+                  }
+                </button>
+
+                <button 
+                  className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
+                >
+                  <PencilSquareIcon className='inline-block h-6 w-6 text-orange-600'/>
+                  <span className='ml-2'>Atualizar tarefa</span>
+                </button>
+
+                {
+                  !done &&
+                  <button 
+                    className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
+                  >
+                    <TrashIcon className='inline-block h-6 w-6 text-red-600'/>
+                    <span className='ml-2'>Deletar tarefa</span>
+                  </button>
+                }
+              </div>
+            } 
+        </div>
       </div>
 
       {/* Description */}
