@@ -4,12 +4,13 @@ import { ArrowRightOnRectangleIcon, Bars3Icon, XMarkIcon } from '@heroicons/reac
 export default function NavBar({
   user = {
     name: 'John Doe',
-    email: 'john_doe@email.com'
+    email: 'john_doe@email.com',
+    photoURL: null
   },
   signOutCallback = () => {}
 }) {
   const [ showProfileMenu, setShowProfileMenu ] = useState(false)
-  const firstLetterCapitalized = user?.name?.charAt(0).toUpperCase()
+  const firstLetterCapitalized = user?.name?.charAt(0).toUpperCase() || "X"
 
   const handleClickProfileMenu = () => {
     setShowProfileMenu(!showProfileMenu)

@@ -8,12 +8,12 @@ export const AuthContext = createContext({})
 
 export const AuthProvider = ({ children }) => {
   const firebaseApp = initFirebase()
-  const googleProvider = new GoogleAuthProvider();
+  const googleProvider = new GoogleAuthProvider()
   const githubProvider = new GithubAuthProvider()
-  const auth = getAuth();
+  const auth = getAuth()
 
   return (
-    <AuthContext.Provider value={{ auth, googleProvider, githubProvider, firebaseApp  }}>
+    <AuthContext.Provider value={{ auth, googleProvider, githubProvider, firebaseApp }}>
       { children }
     </AuthContext.Provider>
   )
