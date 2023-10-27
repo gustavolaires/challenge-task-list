@@ -7,6 +7,7 @@ import { AuthContext } from '@/contexts/AuthContext'
 import { DatabaseContext } from '@/contexts/DatabaseContext'
 import NavBar from '@/layouts/NavBar'
 import CreateTaskModal from '@/layouts/CreateTaskModal'
+import TaskFilters from '@/layouts/TaskFilters'
 import TaskCard from '@/layouts/TaskCard'
 
 const priorities = [
@@ -17,6 +18,21 @@ const priorities = [
   {value: '-2', label: 'Muito baixa', borderColor: 'border-cyan-600', bgColor: 'bg-cyan-300', textColor: 'text-gray-900'},
 ]
 
+const getPriorityFilterInitialState = (value) => {
+  const initialState = priorities.reduce((acc, element) => {
+    acc[element.value] = value
+    return acc
+  }, {})
+
+  return initialState
+}
+
+const statuses = [
+  {value: 'all', label: 'Todas as tarefas', done: [true, false]},
+  {value: 'only-undone', label: 'Apenas tarefas não concluídas', done: [false]},
+  {value: 'only-done', label: 'Apenas tarefas concluídas', done: [true]},
+]
+
 export default function TaskList() {
   const { database } = useContext(DatabaseContext)
   const { auth } = useContext(AuthContext);
@@ -24,9 +40,11 @@ export default function TaskList() {
   const router = useRouter()
 
   const [ tasks, setTasks ] = useState([])
-  
+  const [ priorityFilter, setPriorityFilter ] = useState(getPriorityFilterInitialState(true))
+  const [ statusFilter, setStatusFilter ] = useState('all')
+
   useEffect(() => {
-    console.log(auth)
+    //console.log(auth)
     
     // Retrieve all tasks
     loadTasks()
@@ -67,8 +85,8 @@ export default function TaskList() {
             return b.priority - a.priority || aIsDone - bIsDone || a.timestamp - b.timestamp
           })
 
-        console.log(taskList)
-        console.log()
+        //console.log(taskList)
+        //console.log()
         setTasks(taskList)
       } 
     })
@@ -115,25 +133,46 @@ export default function TaskList() {
             <div className='px-8 py-4'>
               <CreateTaskModal createTaskCallback={handleCreateTask} user={user} priorities={priorities}/>
             </div>
+            <div>
+              <TaskFilters 
+                priorities={priorities}
+                priorityFilter={priorityFilter}
+                priorityFilterCallback={setPriorityFilter}
+                statuses={statuses}
+                statusFilter={statusFilter}
+                statusFilterCallback={setStatusFilter}
+              />
+            </div>
           </header>
 
           <main className='flex flex-wrap content-start justify-center sm:justify-start h-screen bg-gray-100 text-neutral-950 px-2 sm:px-8 py-4'>
-            {tasks.map((task) => {
-              return (
-                <TaskCard
-                  key={task.id}
-                  id={task.id}
-                  title={task.title}
-                  description={task.description}
-                  priority={task.priority}
-                  done={task.done}
-                  createdBy={task.createdBy}
-                  createdAt={task.createdAt}
-                  responsible={task.responsible}
-                  priorities={priorities}
-                />
-              )
-            })}
+            {tasks
+              .filter((task) => {
+                {/* Filtro por status */}
+                const status = statuses.find(e => e.value === statusFilter)
+
+                return status.done.includes(task.done)
+              })
+              .filter((task) => {
+                {/* Filtro por prioridade */}
+                return priorityFilter[task.priority]
+              })
+              .map((task) => {
+                return (
+                  <TaskCard
+                    key={task.id}
+                    id={task.id}
+                    title={task.title}
+                    description={task.description}
+                    priority={task.priority}
+                    done={task.done}
+                    createdBy={task.createdBy}
+                    createdAt={task.createdAt}
+                    responsible={task.responsible}
+                    priorities={priorities}
+                  />
+                )
+              })}
           </main>
         </div>
       }
