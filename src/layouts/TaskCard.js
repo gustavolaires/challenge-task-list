@@ -59,6 +59,10 @@ export default function TaskCard({
     setShowMenu(!showMenu)
   }
 
+  const handleDeleteTask = (uid) => {
+    requestUpdateToDatabase(uid, null)
+  }
+
   const requestUpdateToDatabase = (uid, taskData) => {
     const updates = {}
     updates['/tasks/' + uid] = taskData
@@ -114,7 +118,7 @@ export default function TaskCard({
 
   return (
     <div className='pb-2 w-full'>
-      {/* Header */}
+      {/* Card Header */}
       <div className={`flex justify-between flex-nowrap border-l-8 px-4 py-2 text-gray-100 w-full 
         ${getTaskTitleColor(done)} ${getPriorityColor(priority)}`}
       >
@@ -147,8 +151,8 @@ export default function TaskCard({
             <EllipsisVerticalIcon className='h-6 w-6'/>
           </button>
 
-          {/* Menu */}
-          { showMenu && 
+          { /* Task Menu */
+            showMenu && 
               <div className='absolute right-0 z-10 mt-1 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
                 {/*  Btn Done/Undone */}
                 <button onClick={() => handleUpdateDone(id)}
@@ -191,6 +195,10 @@ export default function TaskCard({
                   !done &&
                   <button 
                     className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
+                    onClick={() => {
+                      handleDeleteTask(id)
+                      setShowMenu(false)
+                    }}
                     aria-level={`task-menu-${id}`}
                   >
                     <TrashIcon className='inline-block h-6 w-6 text-red-600'/>
@@ -202,8 +210,7 @@ export default function TaskCard({
         </div>
       </div>
 
-      {/* Description */}
-      {
+      { /* Card Body */
         expanded && 
         <div className='px-6 py-4 flex flex-col bg-zinc-300 space-y-2'>
           { /* Priority */ }
