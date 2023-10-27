@@ -6,8 +6,7 @@ import { ref, push, child, onValue } from "firebase/database";
 import { AuthContext } from '@/contexts/AuthContext'
 import { DatabaseContext } from '@/contexts/DatabaseContext'
 import NavBar from '@/layouts/NavBar'
-import CreateTaskModal from '@/layouts/CreateTaskModal'
-import TaskFilters from '@/layouts/TaskFilters'
+import Headers from '@/layouts/Header';
 import TaskCard from '@/layouts/TaskCard'
 
 const priorities = [
@@ -117,7 +116,7 @@ export default function TaskList() {
     <>
       {
         user &&
-        <div className='min-h-screen'>
+        <div className='min-h-screen bg-gray-100'>
           <NavBar signOutCallback={handleSignOut}
             user={{
               name: user?.displayName,
@@ -126,26 +125,20 @@ export default function TaskList() {
             }}
           />
 
-          <header className='flex flex-col sm:flex-row justify-between items-center bg-white'>
-            <div className='px-8 py-4 text-2xl text-gray-900'>
-              Tarefas
-            </div>
-            <div className='px-8 py-4'>
-              <CreateTaskModal createTaskCallback={handleCreateTask} user={user} priorities={priorities}/>
-            </div>
-            <div>
-              <TaskFilters 
-                priorities={priorities}
-                priorityFilter={priorityFilter}
-                priorityFilterCallback={setPriorityFilter}
-                statuses={statuses}
-                statusFilter={statusFilter}
-                statusFilterCallback={setStatusFilter}
-              />
-            </div>
-          </header>
+          <Headers
+            user={user}
+            priorities={priorities}
+            createTaskCallback={handleCreateTask}
+            priorityFilter={priorityFilter}
+            priorityFilterCallback={setPriorityFilter}
+            statuses={statuses}
+            statusFilter={statusFilter}
+            statusFilterCallback={setStatusFilter}
+          >
+            <span>Tarefas</span>
+          </Headers>
 
-          <main className='flex flex-wrap content-start justify-center sm:justify-start h-screen bg-gray-100 text-neutral-950 px-2 sm:px-8 py-4'>
+          <main className='flex flex-wrap content-start justify-center sm:justify-start bg-gray-100 text-neutral-950 px-4 sm:px-8 py-4 pb-10'>
             {tasks
               .filter((task) => {
                 {/* Filtro por status */}

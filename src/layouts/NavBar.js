@@ -45,7 +45,7 @@ export default function NavBar({
 
       {/* Mobile Profile Menu Dropdown */}
       <div className='sm:hidden'>
-        <div className='flex justify-end p-4'>
+        <div className='flex justify-end px-2 py-4'>
           {/* Button */}
           <div className='relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-100 
             hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
