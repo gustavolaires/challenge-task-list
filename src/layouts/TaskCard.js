@@ -67,6 +67,14 @@ export default function TaskCard({
     update(ref(database), updates)
   }
 
+  const showUpdateTaskBtn = () => {
+    if(responsible) {
+      return [responsible.uid, createdBy.uid].includes(user.uid)
+    } 
+    
+    return true
+  }
+
   const getTaskTitleColor = (done) => {
     if (done) return 'bg-green-900'
     return 'bg-gray-800'
@@ -129,7 +137,11 @@ export default function TaskCard({
 
 
         <div className='relative'>
-          <button onClick={() => {setShowMenu(!showMenu)}}
+          <button onClick={() => {setShowMenu(!showMenu)}} onBlur={e => {
+            if(e.relatedTarget?.ariaLevel !== `task-menu-${id}`) {
+              setShowMenu(false)
+            }
+          }}
             className='p-1 rounded-md text-gray-100 hover:bg-gray-700 hover:text-white'
           >
             <EllipsisVerticalIcon className='h-6 w-6'/>
@@ -138,8 +150,10 @@ export default function TaskCard({
           {/* Menu */}
           { showMenu && 
               <div className='absolute right-0 z-10 mt-1 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
+                {/*  Btn Done/Undone */}
                 <button onClick={() => handleUpdateDone(id)}
                   className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
+                  aria-level={`task-menu-${id}`}
                 >
                   {
                     done ? (
@@ -156,21 +170,28 @@ export default function TaskCard({
                   }
                 </button>
 
-                <button 
-                  className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
-                  onClick={() => {
-                    setShowModal(!showModal)
-                    setShowMenu(false)
-                  }}
-                >
-                  <PencilSquareIcon className='inline-block h-6 w-6 text-orange-600'/>
-                  <span className='ml-2'>Atualizar tarefa</span>
-                </button>
+                {
+                  /* Btn Atualizar */
+                  showUpdateTaskBtn() &&
+                  <button 
+                    className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
+                    onClick={() => {
+                      setShowModal(!showModal)
+                      setShowMenu(false)
+                    }}
+                    aria-level={`task-menu-${id}`}
+                  >
+                    <PencilSquareIcon className='inline-block h-6 w-6 text-orange-600'/>
+                    <span className='ml-2'>Atualizar tarefa</span>
+                  </button>
+                }
 
                 {
+                  /* Btn Deletar */
                   !done &&
                   <button 
                     className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
+                    aria-level={`task-menu-${id}`}
                   >
                     <TrashIcon className='inline-block h-6 w-6 text-red-600'/>
                     <span className='ml-2'>Deletar tarefa</span>

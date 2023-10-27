@@ -114,17 +114,15 @@ export default function Headers({
             </button>
           </div>
         }
-
-        <TaskFormModal
-          showModal={showModal}
-          closeModalCallback={() => setShowModal(false)}
-          actionModelCallback={actionModelCallback}
-          user={user}
-          priorities={priorities}
-        />
       </header>
 
-      
+      <TaskFormModal
+        showModal={showModal}
+        closeModalCallback={() => setShowModal(false)}
+        actionModelCallback={actionModelCallback}
+        user={user}
+        priorities={priorities}
+      />
 
       {
         showFilters &&

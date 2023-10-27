@@ -23,7 +23,12 @@ export default function NavBar({
         <div className='flex justify-end'>
           <div className='relative rounded-full bg-gray-100'>
             {/* Button */}
-            <button onClick={() => handleClickProfileMenu()}>
+            <button 
+              onClick={() => handleClickProfileMenu()}
+              onBlur={e => {
+                if(e.relatedTarget?.ariaLevel !== `login-btn`) setShowProfileMenu(false)
+              }}
+            >
               <span className='flex justify-center items-center font-semibold text-xl w-6 h-6 m-2'>{firstLetterCapitalized}</span>
             </button>
 
@@ -33,6 +38,7 @@ export default function NavBar({
                 <button 
                   className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
                   onClick={signOutCallback}
+                  aria-level={`login-btn`}
                 >
                   <ArrowRightOnRectangleIcon className='inline-block h-6 w-6'/>
                   <span className='ml-2'>Sign Out</span>
