@@ -27,6 +27,7 @@ export default function TaskCard({
   responsible = null,
   priorities = [],
   user = user,
+  users = [],
 }) {
   const { database } = useContext(DatabaseContext)
 
@@ -34,6 +35,8 @@ export default function TaskCard({
   const [ showMenu, setShowMenu ] = useState(false)
   const [ showTaskModal, setShowTaskModal ] = useState(false)
   const [ showAlertModal, setShowAlertModal ] = useState(false)
+
+  //console.log('TaskCard users: ', users)
 
   const handleUpdateTask = (formData, uid) => {
     requestUpdateToDatabase(uid, {
@@ -271,7 +274,7 @@ export default function TaskCard({
         closeModalCallback={() => setShowTaskModal(false)}
         actionModelCallback={handleUpdateTask}
         actionType='update'
-        user={user}
+        users={users}
         priorities={priorities}
         initialFormData={{
           id: id,

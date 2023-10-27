@@ -8,14 +8,7 @@ import { DatabaseContext } from '@/contexts/DatabaseContext'
 import NavBar from '@/layouts/NavBar'
 import Headers from '@/layouts/Header';
 import TaskCard from '@/layouts/TaskCard'
-
-const priorities = [
-  {value: '2', label: 'Muito alta', borderColor: 'border-red-600', bgColor: 'bg-red-600', textColor: 'text-white'},
-  {value: '1', label: 'Alta', borderColor: 'border-yellow-600', bgColor: 'bg-yellow-600', textColor: 'text-gray-900'},
-  {value: '0', label: 'Normal', borderColor: 'border-gray-400', bgColor: 'bg-gray-600', textColor: 'text-white'},
-  {value: '-1', label: 'Baixa', borderColor: 'border-blue-600', bgColor: 'bg-blue-600', textColor: 'text-white'},
-  {value: '-2', label: 'Muito baixa', borderColor: 'border-cyan-600', bgColor: 'bg-cyan-300', textColor: 'text-gray-900'},
-]
+import { priorities, statuses } from '@/utils/generics';
 
 const getPriorityFilterInitialState = (value) => {
   const initialState = priorities.reduce((acc, element) => {
@@ -26,12 +19,6 @@ const getPriorityFilterInitialState = (value) => {
   return initialState
 }
 
-const statuses = [
-  {value: 'all', label: 'Todas as tarefas', done: [true, false]},
-  {value: 'only-undone', label: 'Apenas tarefas não concluídas', done: [false]},
-  {value: 'only-done', label: 'Apenas tarefas concluídas', done: [true]},
-]
-
 export default function TaskList() {
   const { database } = useContext(DatabaseContext)
   const { auth } = useContext(AuthContext);
@@ -39,16 +26,21 @@ export default function TaskList() {
   const router = useRouter()
 
   const [ tasks, setTasks ] = useState([])
+  const [ users, setUsers ] = useState([])
   const [ priorityFilter, setPriorityFilter ] = useState(getPriorityFilterInitialState(true))
   const [ statusFilter, setStatusFilter ] = useState('all')
 
+  //console.log('users: ', users)
+  
   useEffect(() => {
-    //console.log(auth)
-    
     // Retrieve all tasks
     loadTasks()
-
   }, [])
+
+  useEffect(() => {
+    // Retrive all users
+    loadUsers()
+  }, [user])
 
   useEffect(() => {
     if (!loading && !user) router.push('/')
@@ -91,6 +83,20 @@ export default function TaskList() {
     })
   }
 
+  const loadUsers = () => {
+    if (user) {
+      user.getIdToken()
+        .then((idToken) => {
+          return fetch('http://localhost:3000/api/users', {
+            headers: {Authorization: `Bearer ${idToken}`}
+          })
+        })
+        .then((response) => response.json())
+        .then((result) => setUsers(result.users))
+        .catch((err) => console.error(err))
+    }
+  }
+
   const handleCreateTask = (formData, id) => {
     const taskData = {
       title: formData.title,
@@ -127,8 +133,8 @@ export default function TaskList() {
           />
 
           <Headers
-            user={user}
             priorities={priorities}
+            users={users}
             actionModelCallback={handleCreateTask}
             priorityFilter={priorityFilter}
             priorityFilterCallback={setPriorityFilter}
@@ -165,6 +171,7 @@ export default function TaskList() {
                     responsible={task.responsible}
                     priorities={priorities}
                     user={user}
+                    users={users}
                   />
                 )
               })}

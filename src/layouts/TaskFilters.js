@@ -97,9 +97,9 @@ export default function TaskFilters({
                   priorities.map((priority, index) => {
                     return (
                       <div key={`div-priority-${index}`}
-                        className='flex flex-row flex-start items-center p-2 w-full hover:bg-slate-200'
+                        className='flex flex-row flex-start items-center w-full hover:bg-slate-200'
                       >
-                        <label htmlFor={`priority${index}`} >
+                        <label htmlFor={`priority${index}`} className='w-full p-2'>
                           <input key={`priority${index}`}
                             type='checkbox'
                             id={`priority${index}`}

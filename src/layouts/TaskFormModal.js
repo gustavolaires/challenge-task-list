@@ -7,30 +7,11 @@ export default function TaskFormModal({
   closeModalCallback = () => {},
   actionModelCallback = () => {},
   actionType = 'create',
-  user = null,
+  users = [],
   priorities = [],
   initialFormData = {},
 }) {
   const { register, handleSubmit, reset } = useForm({defaultValues: initialFormData});
-  const [ users, setUsers ] = useState([])
-
-  useEffect(() => {
-    loadUsers()
-  }, [])
-
-  const loadUsers = () => {
-    if (user) {
-      user.getIdToken()
-        .then((idToken) => {
-          return fetch('http://localhost:3000/api/users', {
-            headers: {Authorization: `Bearer ${idToken}`}
-          })
-        })
-        .then((response) => response.json())
-        .then((result) => setUsers(result.users))
-        .catch((err) => console.error(err))
-    }
-  }
 
   const handleCreateTask = (data, e) => {
     e.preventDefault

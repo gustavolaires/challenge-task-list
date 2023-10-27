@@ -6,7 +6,7 @@ import TaskFilters from '@/layouts/TaskFilters'
 
 export default function Headers({
   children,
-  user = null,
+  users = [],
   priorities = [],
   actionModelCallback = () => {},
   priorityFilter = {},
@@ -18,6 +18,8 @@ export default function Headers({
   const [ showFilters, setShowFilters ] = useState(false)
   const [ showListMenu, setListMenu ] = useState(false)
   const [ showModal, setShowModal ] = useState(false)
+
+  //console.log('Header users: ', users)
 
   const filtersOnDisplay = () => {
     if (showFilters) {
@@ -120,7 +122,7 @@ export default function Headers({
         showModal={showModal}
         closeModalCallback={() => setShowModal(false)}
         actionModelCallback={actionModelCallback}
-        user={user}
+        users={users}
         priorities={priorities}
       />
 
