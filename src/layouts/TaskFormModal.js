@@ -51,8 +51,7 @@ export default function TaskFormModal({
   
   return(
     <>
-      {/* Modal */}
-      {
+      { /* Modal */
         showModal && 
         <div className='relative z-10'>
           <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity'></div>
@@ -85,7 +84,7 @@ export default function TaskFormModal({
 
                               {/* Field Title */}
                               <div>
-                                <label className='block text-sm font-medium text-gray-900 leading-6'>
+                                <label htmlFor='title' className='block text-sm font-medium text-gray-900 leading-6'>
                                   Título <span className='text-red-600'>*</span>
                                 </label>
                                 <input {...register('title', { required: true })}
@@ -100,7 +99,9 @@ export default function TaskFormModal({
 
                               {/* Field Description */}
                               <div>
-                                <label className='block text-sm font-medium text-gray-900 leading-6'>Descrição</label>
+                                <label htmlFor='description' className='block text-sm font-medium text-gray-900 leading-6'>
+                                  Descrição
+                                </label>
                                 <textarea {...register('description')}
                                     id='description'
                                     className='block w-full text-gray-900 leading-6 rounded-md p-2 mt-0.5
@@ -112,7 +113,7 @@ export default function TaskFormModal({
 
                               {/* Field Priority */}
                               <div>
-                                <label className='block text-sm font-medium text-gray-900 leading-6'>
+                                <label htmlFor='priority' className='block text-sm font-medium text-gray-900 leading-6'>
                                   Prioridade <span className='text-red-600'>*</span>
                                 </label>
                                 <select {...register('priority')}
@@ -137,7 +138,9 @@ export default function TaskFormModal({
 
                               {/* Field Responsible */}
                               <div>
-                                <label className='block text-sm font-medium text-gray-900 leading-6'>Responsável</label>
+                                <label htmlFor='responsible' className='block text-sm font-medium text-gray-900 leading-6'>
+                                  Responsável
+                                </label>
                                 <select {...register('responsible')}
                                   id='responsible'
                                   className='block w-full leading-6 font-normal p-2 bg-white ring-1 ring-inset ring-gray-300'
@@ -178,11 +181,11 @@ export default function TaskFormModal({
                         </span>
                       </button>
 
-                      <button type='button'
+                      <button type='button' onClick={() => closeModalCallback()} 
                         className='mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 sm:mt-0 shadow-sm sm:w-auto
-                        bg-gray-50  hover:bg-gray-50 ring-1 ring-inset ring-gray-300'
+                        bg-gray-50  hover:bg-gray-100 ring-1 ring-inset ring-gray-300'
                       >
-                        <span onClick={() => closeModalCallback()} className='text-base font-medium text-gray-900'>
+                        <span className='text-base font-medium text-gray-900'>
                           Cancelar
                         </span>
                       </button>

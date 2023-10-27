@@ -40,10 +40,10 @@ export default function TaskFilters({
       <div className='flex flex-col space-y-4 sm:flex-row sm:space-x-6 sm:space-y-0 items-stretch'>
         {/* Situação */}
         <div className='flex flex-col sm:flex-row sm:justify-center sm:items-center sm:space-x-2'>
-          <label className='block text-sm font-medium text-gray-900 leading-6'>
+          <label htmlFor='task-filters-situation' className='block text-sm font-medium text-gray-900 leading-6'>
             Situação:
           </label>
-          <select id='situation'
+          <select id='task-filters-situation' name='task-filters-situation'
             className='block py-2 px-3 mt-0.5 w-full h-[40px] rounded-md leading-6 font-medium bg-white ring-1 ring-inset ring-gray-300'
             defaultValue={statusFilter}
             onChange={e => statusFilterCallback(e.target.value)}
@@ -67,12 +67,13 @@ export default function TaskFilters({
         <div className='relative block sm:inline-block text-left'>
           {/* Btn */}
           <div className='flex flex-col sm:flex-row sm:justify-center sm:items-center sm:space-x-2'>
-            <label className='block text-sm font-medium text-gray-900 leading-6'>
+            <label htmlFor='task-filters-priority' className='block text-sm font-medium text-gray-900 leading-6'>
               Prioridade:
             </label>
-            <button onClick={() => setShowSituationFilter(!showSituationFilter)} 
+            <button id='task-filters-priority' name='task-filters-priority'
               className='flex w-full justify-between items-center rounded-md bg-white pl-3 py-2 mt-0.5 text-gray-900 shadow-sm 
-                ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+              ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+              onClick={() => setShowSituationFilter(!showSituationFilter)} 
             >
               <span className='sm:pr-14'>Prioridade</span>
               {
@@ -98,7 +99,7 @@ export default function TaskFilters({
                       <div key={`div-priority-${index}`}
                         className='flex flex-row flex-start items-center p-2 w-full hover:bg-slate-200'
                       >
-                        <label>
+                        <label htmlFor={`priority${index}`} >
                           <input key={`priority${index}`}
                             type='checkbox'
                             id={`priority${index}`}

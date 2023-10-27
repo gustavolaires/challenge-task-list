@@ -4,6 +4,7 @@ import moment from "moment/moment"
 
 import { DatabaseContext } from '@/contexts/DatabaseContext'
 import TaskFormModal from '@/layouts/TaskFormModal'
+import AlertModal from '@/layouts/AlertModal';
 
 import { 
   EllipsisVerticalIcon,
@@ -31,7 +32,8 @@ export default function TaskCard({
 
   const [ expanded, setExpanded ] = useState(false)
   const [ showMenu, setShowMenu ] = useState(false)
-  const [ showModal, setShowModal ] = useState(false)
+  const [ showTaskModal, setShowTaskModal ] = useState(false)
+  const [ showAlertModal, setShowAlertModal ] = useState(false)
 
   const handleUpdateTask = (formData, uid) => {
     requestUpdateToDatabase(uid, {
@@ -180,7 +182,7 @@ export default function TaskCard({
                   <button 
                     className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
                     onClick={() => {
-                      setShowModal(!showModal)
+                      setShowTaskModal(true)
                       setShowMenu(false)
                     }}
                     aria-level={`task-menu-${id}`}
@@ -196,7 +198,7 @@ export default function TaskCard({
                   <button 
                     className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
                     onClick={() => {
-                      handleDeleteTask(id)
+                      setShowAlertModal(true)
                       setShowMenu(false)
                     }}
                     aria-level={`task-menu-${id}`}
@@ -265,8 +267,8 @@ export default function TaskCard({
       }
 
       <TaskFormModal
-        showModal={showModal}
-        closeModalCallback={() => setShowModal(false)}
+        showModal={showTaskModal}
+        closeModalCallback={() => setShowTaskModal(false)}
         actionModelCallback={handleUpdateTask}
         actionType='update'
         user={user}
@@ -280,6 +282,19 @@ export default function TaskCard({
           createdBy: createdBy
         }}
       />
+
+      <AlertModal 
+        title='Deletar tarefa'
+        actionBtnName='Deletar'
+        actionBtnClassName='bg-red-600 hover:bg-red-700'
+        showModal={showAlertModal}
+        actionModalCallback={() => {handleDeleteTask(id)}}
+        closeModalCallback={() => {setShowAlertModal(false)}}
+      >
+        <span>
+          Tem certeza que deseja deletar a tarefa: <span className='font-semibold'>{`${title}`}</span>?
+        </span>
+      </AlertModal>
     </div>
   )
 }
