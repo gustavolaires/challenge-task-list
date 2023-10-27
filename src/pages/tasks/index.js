@@ -81,7 +81,7 @@ export default function TaskList() {
             const aIsDone = a.done ? 1 : -1
             const bIsDone = b.done ? 1 : -1
 
-            return b.priority - a.priority || aIsDone - bIsDone || a.timestamp - b.timestamp
+            return b.priority - a.priority || aIsDone - bIsDone || a.createdAt - b.createdAt
           })
 
         //console.log(taskList)
@@ -90,7 +90,8 @@ export default function TaskList() {
       } 
     })
   }
-  const handleCreateTask = (formData) => {
+
+  const handleCreateTask = (formData, id) => {
     const taskData = {
       title: formData.title,
       description: formData.description,
@@ -128,7 +129,7 @@ export default function TaskList() {
           <Headers
             user={user}
             priorities={priorities}
-            createTaskCallback={handleCreateTask}
+            actionModelCallback={handleCreateTask}
             priorityFilter={priorityFilter}
             priorityFilterCallback={setPriorityFilter}
             statuses={statuses}
@@ -163,6 +164,7 @@ export default function TaskList() {
                     createdAt={task.createdAt}
                     responsible={task.responsible}
                     priorities={priorities}
+                    user={user}
                   />
                 )
               })}

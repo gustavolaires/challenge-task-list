@@ -1,15 +1,14 @@
 import { useState } from 'react'
 import { EllipsisVerticalIcon, EyeIcon, EyeSlashIcon, PlusCircleIcon, PlusIcon } from '@heroicons/react/24/solid'
 
-import CreateTaskModal from '@/layouts/CreateTaskModal'
+import TaskFormModal from '@/layouts/TaskFormModal'
 import TaskFilters from '@/layouts/TaskFilters'
-
 
 export default function Headers({
   children,
   user = null,
   priorities = [],
-  createTaskCallback = () => {},
+  actionModelCallback = () => {},
   priorityFilter = {},
   priorityFilterCallback = () => {},
   statuses = [],
@@ -116,10 +115,10 @@ export default function Headers({
           </div>
         }
 
-        <CreateTaskModal
+        <TaskFormModal
           showModal={showModal}
           closeModalCallback={() => setShowModal(false)}
-          createTaskCallback={createTaskCallback}
+          actionModelCallback={actionModelCallback}
           user={user}
           priorities={priorities}
         />

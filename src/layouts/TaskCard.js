@@ -1,5 +1,9 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { ref, update } from "firebase/database";
 import moment from "moment/moment"
+
+import { DatabaseContext } from '@/contexts/DatabaseContext'
+import TaskFormModal from '@/layouts/TaskFormModal'
 
 import { 
   EllipsisVerticalIcon,
@@ -12,6 +16,7 @@ import {
 } from "@heroicons/react/24/solid"
 
 export default function TaskCard({
+  id = '',
   title = 'Card Title',
   description = 'Card description',
   priority = '0',
@@ -20,9 +25,47 @@ export default function TaskCard({
   createdAt = 0,
   responsible = null,
   priorities = [],
+  user = user,
 }) {
+  const { database } = useContext(DatabaseContext)
+
   const [ expanded, setExpanded ] = useState(false)
   const [ showMenu, setShowMenu ] = useState(false)
+  const [ showModal, setShowModal ] = useState(false)
+
+  const handleUpdateTask = (formData, uid) => {
+    requestUpdateToDatabase(uid, {
+      title: formData.title,
+      description: formData.description,
+      priority: formData.priority,
+      responsible: formData.responsible,
+      done: done,
+      createdBy: createdBy,
+      timestamp: createdAt,
+    })
+  }
+
+  const handleUpdateDone = (uid) => {
+    requestUpdateToDatabase(uid, {
+      title: title,
+      description: description,
+      priority: priority,
+      done: !done,
+      timestamp: createdAt,
+      responsible: responsible,
+      createdBy: createdBy,
+    })
+
+    setShowMenu(!showMenu)
+  }
+
+  const requestUpdateToDatabase = (uid, taskData) => {
+    const updates = {}
+    updates['/tasks/' + uid] = taskData
+
+    // Update data with ID to database
+    update(ref(database), updates)
+  }
 
   const getTaskTitleColor = (done) => {
     if (done) return 'bg-green-900'
@@ -86,7 +129,7 @@ export default function TaskCard({
 
 
         <div className='relative'>
-          <button onClick={() => {setShowMenu(!showMenu)}} onBlur={() => setShowMenu(false)}
+          <button onClick={() => {setShowMenu(!showMenu)}}
             className='p-1 rounded-md text-gray-100 hover:bg-gray-700 hover:text-white'
           >
             <EllipsisVerticalIcon className='h-6 w-6'/>
@@ -95,7 +138,7 @@ export default function TaskCard({
           {/* Menu */}
           { showMenu && 
               <div className='absolute right-0 z-10 mt-1 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
-                <button 
+                <button onClick={() => handleUpdateDone(id)}
                   className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
                 >
                   {
@@ -115,6 +158,10 @@ export default function TaskCard({
 
                 <button 
                   className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
+                  onClick={() => {
+                    setShowModal(!showModal)
+                    setShowMenu(false)
+                  }}
                 >
                   <PencilSquareIcon className='inline-block h-6 w-6 text-orange-600'/>
                   <span className='ml-2'>Atualizar tarefa</span>
@@ -188,6 +235,23 @@ export default function TaskCard({
           </div>
         </div>
       }
+
+      <TaskFormModal
+        showModal={showModal}
+        closeModalCallback={() => setShowModal(false)}
+        actionModelCallback={handleUpdateTask}
+        actionType='update'
+        user={user}
+        priorities={priorities}
+        initialFormData={{
+          id: id,
+          title: title,
+          description: description,
+          priority: priority,
+          responsible: responsible?.uid || '',
+          createdBy: createdBy
+        }}
+      />
     </div>
   )
 }

@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
-export default function CreateTaskModal({
+export default function TaskFormModal({
   showModal = false,
   closeModalCallback = () => {},
-  createTaskCallback = () => {},
+  actionModelCallback = () => {},
+  actionType = 'create',
   user = null,
   priorities = [],
+  initialFormData = {},
 }) {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm({defaultValues: initialFormData});
   const [ users, setUsers ] = useState([])
 
   useEffect(() => {
@@ -17,7 +19,6 @@ export default function CreateTaskModal({
   }, [])
 
   const loadUsers = () => {
-    console.log(user)
     if (user) {
       user.getIdToken()
         .then((idToken) => {
@@ -38,13 +39,14 @@ export default function CreateTaskModal({
       null : 
       users.find(e => e.uid === data.responsible)
 
-    createTaskCallback({
+    console.log(data)
+    actionModelCallback({
       ...data,
       responsible: responsible,
-    })
+    }, initialFormData.id)
     
+    if(actionType === 'create') { reset() }
     closeModalCallback()
-    reset()
   }
   
   return(
@@ -62,7 +64,11 @@ export default function CreateTaskModal({
                   <form onSubmit={handleSubmit(handleCreateTask)}>
                     {/* Header */}
                     <div className='bg-gray-800 px-4 py-2 flex justify-between sm:pl-6 text-gray-100'>
-                      <h3 className='flex items-center text-lg font-medium leading-6'>Nova tarefa</h3>
+                      <h3 className='flex items-center text-lg font-medium leading-6'>
+                        {
+                          actionType == 'create' ? 'Nova tarefa' : 'Atualizar tarefa'
+                        }
+                      </h3>
                       <button className='p-2 rounded-md text-gray-100 hover:bg-gray-700 hover:text-white'
                         onClick={() => closeModalCallback()}
                       >
@@ -165,7 +171,11 @@ export default function CreateTaskModal({
                         className='inline-flex w-full justify-center rounded-md px-3 py-2 shadow-sm sm:w-auto 
                         bg-indigo-600 hover:bg-indigo-500 sm:ml-3'
                       >
-                        <span className='text-base font-medium text-gray-50'>Criar tarefa</span>
+                        <span className='text-base font-medium text-gray-50'>
+                          {
+                            actionType == 'create' ? 'Criar tarefa' : 'Atualizar tarefa'
+                          }
+                        </span>
                       </button>
 
                       <button type='button'
