@@ -1,9 +1,9 @@
 import { useState, useContext } from "react"
 import { ref, update } from "firebase/database";
 import moment from "moment/moment"
+import { io } from "socket.io-client";
 
 import { DatabaseContext } from '@/contexts/DatabaseContext'
-import { SocketContext } from '@/contexts/SocketContext';
 import TaskFormModal from '@/layouts/TaskFormModal'
 import AlertModal from '@/layouts/AlertModal';
 import { Priorities } from '@/utils/generics';
@@ -31,7 +31,7 @@ export default function TaskCard({
   users = [],
 }) {
   const { database } = useContext(DatabaseContext)
-  const { socket } = useContext(SocketContext);
+  const socket = io()
 
   const [ expanded, setExpanded ] = useState(false)
   const [ showMenu, setShowMenu ] = useState(false)

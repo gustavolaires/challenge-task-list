@@ -7,7 +7,6 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 import { AuthContext } from '@/contexts/AuthContext'
 import { DatabaseContext } from '@/contexts/DatabaseContext'
-import { SocketContext } from '@/contexts/SocketContext';
 import NavBar from '@/layouts/NavBar'
 import Headers from '@/layouts/Header';
 import TaskCard from '@/layouts/TaskCard'
@@ -25,9 +24,9 @@ const getPriorityFilterInitialState = (value) => {
 export default function TaskList() {
   const { database } = useContext(DatabaseContext)
   const { auth } = useContext(AuthContext);
-  const { socket } = useContext(SocketContext);
   const [ user, loading ] = useAuthState(auth)
   const router = useRouter()
+  const socket = io()
 
   const [ tasks, setTasks ] = useState([])
   const [ users, setUsers ] = useState([])
@@ -37,8 +36,8 @@ export default function TaskList() {
 
   //console.log('users: ', users)
   //console.log('initialDataLoaded: ', initialDataLoaded)
-  console.log('Priorities: ', Priorities)
-  console.log('tasks: ', tasks)
+  //console.log('Priorities: ', Priorities)
+  //console.log('tasks: ', tasks)
   
   useEffect(() => {
     // Retrieve all tasks
@@ -138,7 +137,7 @@ export default function TaskList() {
       timestamp: Date.now()
     }
 
-    console.log(taskData)
+    //console.log(taskData)
     
     // Send data to database with Auto UID
     push(child(ref(database), 'tasks'), taskData)
