@@ -2,10 +2,12 @@ import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { ref, push, child, onValue } from "firebase/database";
+import { io } from "socket.io-client";
 import ClipLoader from 'react-spinners/ClipLoader';
 
 import { AuthContext } from '@/contexts/AuthContext'
 import { DatabaseContext } from '@/contexts/DatabaseContext'
+import { SocketContext } from '@/contexts/SocketContext';
 import NavBar from '@/layouts/NavBar'
 import Headers from '@/layouts/Header';
 import TaskCard from '@/layouts/TaskCard'
@@ -23,6 +25,7 @@ const getPriorityFilterInitialState = (value) => {
 export default function TaskList() {
   const { database } = useContext(DatabaseContext)
   const { auth } = useContext(AuthContext);
+  const { socket } = useContext(SocketContext);
   const [ user, loading ] = useAuthState(auth)
   const router = useRouter()
 
@@ -40,6 +43,8 @@ export default function TaskList() {
   useEffect(() => {
     // Retrieve all tasks
     loadTasks()
+    // Connect socket
+    socketInitializer()
   }, [])
 
   useEffect(() => {
@@ -53,6 +58,20 @@ export default function TaskList() {
 
   const handleSignOut = () => {
     auth.signOut()
+  }
+
+  const socketInitializer = async () => {
+    await fetch('/api/socket')
+
+    // Listen for incoming messages
+    socket.on('sync-tasks', (data) => {
+      loadTasks()
+    })
+
+    // Clean up the socket connection on unmount
+    return () => {
+      socket.disconnect();
+    };
   }
 
   const loadTasks = () => {
@@ -123,6 +142,7 @@ export default function TaskList() {
     
     // Send data to database with Auto UID
     push(child(ref(database), 'tasks'), taskData)
+    socket.emit('update-tasks', true)
   }
   
   return (
