@@ -11,7 +11,7 @@ export default function NavBar({
   userLoaded = false,
 }) {
   const [ showProfileMenu, setShowProfileMenu ] = useState(false)
-  const firstLetterCapitalized = user?.name?.charAt(0).toUpperCase() || "X"
+  const firstLetterCapitalized = user?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "X"
 
   const handleClickProfileMenu = () => {
     setShowProfileMenu(!showProfileMenu)

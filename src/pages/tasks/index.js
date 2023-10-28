@@ -33,11 +33,6 @@ export default function TaskList() {
   const [ priorityFilter, setPriorityFilter ] = useState(getPriorityFilterInitialState(true))
   const [ statusFilter, setStatusFilter ] = useState('all')
   const [ initialDataLoaded, setInitialDataLoaded ] = useState(false)
-
-  //console.log('users: ', users)
-  //console.log('initialDataLoaded: ', initialDataLoaded)
-  //console.log('Priorities: ', Priorities)
-  //console.log('tasks: ', tasks)
   
   useEffect(() => {
     // Retrieve all tasks
@@ -52,11 +47,16 @@ export default function TaskList() {
   }, [user])
 
   useEffect(() => {
-    if (!loading && !user) router.push('/')
+    if (!loading && !user) {
+      socket.disconnect()
+      router.push('/')
+    }
   }, [user, loading])
 
   const handleSignOut = () => {
+    socket.disconnect()
     auth.signOut()
+    router.push('/')
   }
 
   const socketInitializer = async () => {

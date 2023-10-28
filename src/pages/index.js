@@ -3,14 +3,20 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { signInWithPopup } from 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { io } from "socket.io-client"
 
 import { AuthContext } from '@/contexts/AuthContext'
 
-export default function Home() {
+export default function SingIn() {
   const { register, handleSubmit } = useForm();
   const { auth, googleProvider, githubProvider } = useContext(AuthContext)
   const [ user ] = useAuthState(auth)
   const router = useRouter()
+  const socket = io()
+
+  useEffect(() => {
+    socket.disconnect()
+  }, [])
 
   useEffect(() => {
     if (user) router.push('/tasks')
@@ -27,6 +33,10 @@ export default function Home() {
 
   const handleSingInWithGithub = async () => {
     const result = await signInWithPopup(auth, githubProvider)
+  }
+
+  const handleSingUp = () => {
+    router.push('/singup')
   }
 
   return (
@@ -49,9 +59,9 @@ export default function Home() {
                 {...register('email')}
                 id='email'
                 type='email'
-                placeholder='my-email@email.com'
+                placeholder='example@email.com'
                 className='block w-full text-gray-900 leading-6 rounded-md p-2 mt-0.5 ring-1 ring-inset ring-gray-300
-                  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400'
+                  placeholder:text-gray-400 placeholder:text-sm focus:ring-2 focus:ring-inset focus:ring-indigo-400'
               />
             </div>
 
@@ -62,8 +72,9 @@ export default function Home() {
                 {...register('password')}
                 id='password'
                 type='password'
+                placeholder='Digite sua senha'
                 className='block w-full text-gray-900 leading-6 rounded-md p-2 mt-0.5 ring-1 ring-inset ring-gray-300
-                  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400'
+                  placeholder:text-gray-400 placeholder:text-sm focus:ring-2 focus:ring-inset focus:ring-indigo-400'
               />
             </div>
 
@@ -107,7 +118,13 @@ export default function Home() {
       {/* Footer */}
       <div className='mt-10'>
         <span className='text-sm font-medium text-gray-500 leading-6'>
-          Don´t have an account? Sign up
+          {`Don´t have an account? `}
+          <button 
+            className='text-indigo-500 font-semibold'
+            onClick={() => handleSingUp()}
+          >
+            Sign up
+          </button>
         </span>
       </div>
     </main>

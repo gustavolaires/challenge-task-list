@@ -12,6 +12,10 @@ export default function handlerTasks(req, res) {
         socket.on('update-tasks', (message) => {
             io.emit('sync-tasks', message);
         });
+
+        socket.on('disconnect', () => {
+          socket.disconnect()
+      });
     });
     res.socket.server.io = io;
   }
