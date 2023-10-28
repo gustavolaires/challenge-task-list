@@ -21,7 +21,6 @@ export default function TaskFormModal({
       null : 
       users.find(e => e.uid === data.responsible)
 
-    console.log(data)
     actionModelCallback({
       ...data,
       responsible: responsible,
@@ -43,6 +42,7 @@ export default function TaskFormModal({
               <div className='overflow-hidden  text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-xl sm:rounded-md'>
                 <div className='bg-white text-left'>
                   <form onSubmit={handleSubmit(handleActionModalTask)}>
+                    
                     {/* Header */}
                     <div className='bg-gray-800 px-4 py-2 flex justify-between sm:pl-6 text-gray-100'>
                       <h3 className='flex items-center text-lg font-medium leading-6'>

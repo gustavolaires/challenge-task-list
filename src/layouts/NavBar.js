@@ -19,10 +19,12 @@ export default function NavBar({
 
   return (
     <nav className='bg-gray-800'>
+      
       {/* Profile Menu Dropdown */}
       <div className='hidden sm:block p-4'>
         <div className='flex justify-end'>
           <div className='relative rounded-full bg-gray-100'>
+
             {/* Button */
               userLoaded ? (
                 <button 
@@ -40,8 +42,8 @@ export default function NavBar({
               )
             }
 
-            {/* Menu */}
-            { showProfileMenu && 
+            { /* Menu */
+              showProfileMenu && 
               <div className='absolute right-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
                 <button 
                   className='block px-4 py-2 w-full text-sm text-left text-gray-700 bg-white hover:bg-slate-200'
@@ -60,6 +62,7 @@ export default function NavBar({
       {/* Mobile Profile Menu Dropdown */}
       <div className='sm:hidden'>
         <div className='flex justify-end px-2 py-4'>
+
           {/* Button */}
           <div className='relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-100 
             hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
@@ -72,8 +75,7 @@ export default function NavBar({
           </div>
         </div>
 
-        {/* Menu */}
-        { 
+        { /* Menu */ 
           showProfileMenu &&
           <div className='border-t-2 border-solid border-gray-600 pb-3 pt-4'>
             <div className='flex items-center px-5'>

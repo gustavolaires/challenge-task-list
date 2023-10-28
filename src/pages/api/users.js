@@ -35,6 +35,7 @@ export default async function handler(req, res) {
 }
 
 const listAllUsers = async (nextPageToken, previousUserList = []) => {
+
   // List batch of users, 1000 at a time.
   const result = firebaseAdminApp
     .auth()
@@ -50,6 +51,7 @@ const listAllUsers = async (nextPageToken, previousUserList = []) => {
       })
 
       if (listUsersResult.pageToken) {
+        
         // List next batch of users.
         listAllUsers(listUsersResult.pageToken)
       } else {

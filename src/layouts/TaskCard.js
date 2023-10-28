@@ -218,6 +218,7 @@ export default function TaskCard({
       { /* Card Body */
         expanded && 
         <div className='px-6 py-4 flex flex-col bg-zinc-300 space-y-2'>
+
           { /* Priority */ }
           <div className='flex border-gray-400 border-b-2 pb-2 flex-row justify-between'>
             <span className='break-words text-sm font-medium text-gray-900 leading-6 pb-0.5'>Prioridade:</span>

@@ -38,6 +38,7 @@ export default function TaskFilters({
     <div className='border-y-2 pb-4 pt-3 mt-2 space-y-4 sm:space-y-2'>
       <div className='text-lg text-gray-900'>Filtros</div>
       <div className='flex flex-col space-y-4 sm:flex-row sm:space-x-6 sm:space-y-0 items-stretch'>
+        
         {/* Situação */}
         <div className='flex flex-col sm:flex-row sm:justify-center sm:items-center sm:space-x-2'>
           <label htmlFor='task-filters-situation' className='block text-sm font-medium text-gray-900 leading-6'>
@@ -65,6 +66,7 @@ export default function TaskFilters({
 
         {/* Prioridade */}
         <div className='relative block sm:inline-block text-left'>
+
           {/* Btn */}
           <div className='flex flex-col sm:flex-row sm:justify-center sm:items-center sm:space-x-2'>
             <label htmlFor='task-filters-priority' className='block text-sm font-medium text-gray-900 leading-6'>
@@ -86,8 +88,7 @@ export default function TaskFilters({
             </button>
           </div>
 
-          {/* Menu */}
-          {
+          {/* Menu */
             showSituationFilter &&
             <div className='absolute right-0 z-20 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg 
               ring-1 ring-black ring-opacity-5 focus:outline-none'

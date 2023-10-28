@@ -7,8 +7,7 @@ export default function handlerTasks(req, res) {
 
     // Listen for connection events
     io.on('connection', (socket) => {
-        //console.log(`Socket ${socket.id} connected.`);
-
+      
         // Listen for incoming messages and broadcast to all clients
         socket.on('update-tasks', (message) => {
             io.emit('sync-tasks', message);

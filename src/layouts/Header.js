@@ -17,8 +17,6 @@ export default function Headers({
   const [ showListMenu, setListMenu ] = useState(false)
   const [ showModal, setShowModal ] = useState(false)
 
-  //console.log('Header users: ', users)
-
   const filtersOnDisplay = () => {
     if (showFilters) {
       return 'bg-gray-100 hover:bg-gray-200 ring-1 ring-inset ring-gray-400'
@@ -74,8 +72,8 @@ export default function Headers({
           </button>
         </div>
 
-        {/* Menu - Size sm */}
-        { showListMenu && 
+        { /* Menu - Size sm */
+          showListMenu && 
           <div className='block sm:hidden absolute right-0 top-10 z-10 mt-1 w-48 rounded-md bg-white py-1 shadow-lg 
             ring-1 ring-black ring-opacity-5'
           >
