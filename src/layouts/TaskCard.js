@@ -5,6 +5,7 @@ import moment from "moment/moment"
 import { DatabaseContext } from '@/contexts/DatabaseContext'
 import TaskFormModal from '@/layouts/TaskFormModal'
 import AlertModal from '@/layouts/AlertModal';
+import { Priorities } from '@/utils/generics';
 
 import { 
   EllipsisVerticalIcon,
@@ -25,7 +26,6 @@ export default function TaskCard({
   createdBy = null,
   createdAt = 0,
   responsible = null,
-  priorities = [],
   user = user,
   users = [],
 }) {
@@ -35,8 +35,6 @@ export default function TaskCard({
   const [ showMenu, setShowMenu ] = useState(false)
   const [ showTaskModal, setShowTaskModal ] = useState(false)
   const [ showAlertModal, setShowAlertModal ] = useState(false)
-
-  //console.log('TaskCard users: ', users)
 
   const handleUpdateTask = (formData, uid) => {
     requestUpdateToDatabase(uid, {
@@ -90,14 +88,14 @@ export default function TaskCard({
   }
 
   const getPriorityColor = (priority) => {
-    const selectedPriority = priorities.find(e => e.value === priority)
+    const selectedPriority = Priorities.find(e => e.value === priority)
     const borderColor = selectedPriority ? selectedPriority.borderColor : 'border-white'
 
     return borderColor
   }
 
   const getPriorityTagColors = (priority) => {
-    const selectedPriority = priorities.find(e => e.value === priority)
+    const selectedPriority = Priorities.find(e => e.value === priority)
     const tagColors = selectedPriority ? 
       [selectedPriority.bgColor, selectedPriority.textColor].join(' ') :
       'bg-white text-gray-900'
@@ -106,7 +104,7 @@ export default function TaskCard({
   }
 
   const getPrioritLabel = (priority) => {
-    const selectedPriority = priorities.find(e => e.value === priority)
+    const selectedPriority = Priorities.find(e => e.value === priority)
 
     return selectedPriority.label || ''
   }
@@ -124,9 +122,8 @@ export default function TaskCard({
   return (
     <div className='pb-2 w-full'>
       {/* Card Header */}
-      <div className={`flex justify-between flex-nowrap border-l-8 px-4 py-2 text-gray-100 w-full 
-        ${getTaskTitleColor(done)} ${getPriorityColor(priority)}`}
-      >
+      <div className={`flex justify-between flex-nowrap border-l-8 px-4 py-2 text-gray-100 w-full
+        ${getTaskTitleColor(done)} ${getPriorityColor(priority)}`}>
 
         <div className='flex flex-row flex-nowrap w-5/6 sm:w-full' onClick={() => {setExpanded(!expanded)}}>
           { done &&
@@ -222,7 +219,7 @@ export default function TaskCard({
           <div className='flex border-gray-400 border-b-2 pb-2 flex-row justify-between'>
             <span className='break-words text-sm font-medium text-gray-900 leading-6 pb-0.5'>Prioridade:</span>
 
-            <span className={`break-words whitespace-nowrap rounded-full leading-6 px-4  w-max ${getPriorityTagColors(priority)}`}>
+            <span className={`break-words whitespace-nowrap rounded-full leading-6 px-4 w-max ${getPriorityTagColors(priority)}`}>
               {getPrioritLabel(priority)}
             </span>
           </div>
@@ -275,7 +272,6 @@ export default function TaskCard({
         actionModelCallback={handleUpdateTask}
         actionType='update'
         users={users}
-        priorities={priorities}
         initialFormData={{
           id: id,
           title: title,

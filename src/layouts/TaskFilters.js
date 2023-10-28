@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 
+import { Priorities, Statuses } from '@/utils/generics';
+
 export default function TaskFilters({
-  priorities = [],
   priorityFilter = {},
   priorityFilterCallback = () => {},
-  statuses = [],
   statusFilter = 'all',
   statusFilterCallback = () => {}
 }) {
@@ -19,7 +19,7 @@ export default function TaskFilters({
   }
 
   const resetAllPriorityCheckboxes = (value) => {
-    const newState = priorities.reduce((acc, element) => {
+    const newState = Priorities.reduce((acc, element) => {
       acc[element.value] = value
 
       return acc
@@ -49,7 +49,7 @@ export default function TaskFilters({
             onChange={e => statusFilterCallback(e.target.value)}
           >
             {
-              statuses.map((element) => {
+              Statuses.map((element) => {
                 return (
                   <option key={element.value}
                     className='font-normal text-base'
@@ -94,7 +94,7 @@ export default function TaskFilters({
             >
               <div className='py-2'>
                 {
-                  priorities.map((priority, index) => {
+                  Priorities.map((priority, index) => {
                     return (
                       <div key={`div-priority-${index}`}
                         className='flex flex-row flex-start items-center w-full hover:bg-slate-200'

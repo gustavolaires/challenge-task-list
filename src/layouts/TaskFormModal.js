@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
+import { Priorities } from '@/utils/generics';
+
 export default function TaskFormModal({
   showModal = false,
   closeModalCallback = () => {},
   actionModelCallback = () => {},
   actionType = 'create',
   users = [],
-  priorities = [],
   initialFormData = {},
 }) {
   const { register, handleSubmit, reset } = useForm({defaultValues: initialFormData});
@@ -103,7 +104,7 @@ export default function TaskFormModal({
                                   defaultValue={0}
                                 >
                                   {
-                                    priorities.map((priority, index) => {
+                                    Priorities.map((priority, index) => {
                                       return (
                                         <option key={index}
                                           className='font-normal'

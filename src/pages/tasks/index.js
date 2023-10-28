@@ -2,16 +2,17 @@ import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { ref, push, child, onValue } from "firebase/database";
+import ClipLoader from 'react-spinners/ClipLoader';
 
 import { AuthContext } from '@/contexts/AuthContext'
 import { DatabaseContext } from '@/contexts/DatabaseContext'
 import NavBar from '@/layouts/NavBar'
 import Headers from '@/layouts/Header';
 import TaskCard from '@/layouts/TaskCard'
-import { priorities, statuses } from '@/utils/generics';
+import { Priorities, Statuses } from '@/utils/generics';
 
 const getPriorityFilterInitialState = (value) => {
-  const initialState = priorities.reduce((acc, element) => {
+  const initialState = Priorities.reduce((acc, element) => {
     acc[element.value] = value
     return acc
   }, {})
@@ -29,8 +30,12 @@ export default function TaskList() {
   const [ users, setUsers ] = useState([])
   const [ priorityFilter, setPriorityFilter ] = useState(getPriorityFilterInitialState(true))
   const [ statusFilter, setStatusFilter ] = useState('all')
+  const [ initialDataLoaded, setInitialDataLoaded ] = useState(false)
 
   //console.log('users: ', users)
+  //console.log('initialDataLoaded: ', initialDataLoaded)
+  console.log('Priorities: ', Priorities)
+  console.log('tasks: ', tasks)
   
   useEffect(() => {
     // Retrieve all tasks
@@ -83,9 +88,9 @@ export default function TaskList() {
     })
   }
 
-  const loadUsers = () => {
+  const loadUsers = async () => {
     if (user) {
-      user.getIdToken()
+      await user.getIdToken()
         .then((idToken) => {
           return fetch('http://localhost:3000/api/users', {
             headers: {Authorization: `Bearer ${idToken}`}
@@ -94,6 +99,7 @@ export default function TaskList() {
         .then((response) => response.json())
         .then((result) => setUsers(result.users))
         .catch((err) => console.error(err))
+        .finally(() => setInitialDataLoaded(true))
     }
   }
 
@@ -130,15 +136,14 @@ export default function TaskList() {
               email: user?.email,
               photoURL: user?.photoURL
             }}
+            userLoaded={initialDataLoaded}
           />
 
           <Headers
-            priorities={priorities}
             users={users}
             actionModelCallback={handleCreateTask}
             priorityFilter={priorityFilter}
             priorityFilterCallback={setPriorityFilter}
-            statuses={statuses}
             statusFilter={statusFilter}
             statusFilterCallback={setStatusFilter}
           >
@@ -149,7 +154,7 @@ export default function TaskList() {
             {tasks
               .filter((task) => {
                 {/* Filtro por status */}
-                const status = statuses.find(e => e.value === statusFilter)
+                const status = Statuses.find(e => e.value === statusFilter)
 
                 return status.done.includes(task.done)
               })
@@ -169,13 +174,22 @@ export default function TaskList() {
                     createdBy={task.createdBy}
                     createdAt={task.createdAt}
                     responsible={task.responsible}
-                    priorities={priorities}
                     user={user}
                     users={users}
                   />
                 )
               })}
           </main>
+        </div>
+      }
+      {
+        !initialDataLoaded &&
+        <div className='flex justify-center items-center h-screen'>
+          <ClipLoader
+            loading={!initialDataLoaded}
+            color='#4f46e5'
+            size={100}
+          />
         </div>
       }
     </>

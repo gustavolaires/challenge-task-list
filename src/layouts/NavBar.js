@@ -7,7 +7,8 @@ export default function NavBar({
     email: 'john_doe@email.com',
     photoURL: null
   },
-  signOutCallback = () => {}
+  signOutCallback = () => {},
+  userLoaded = false,
 }) {
   const [ showProfileMenu, setShowProfileMenu ] = useState(false)
   const firstLetterCapitalized = user?.name?.charAt(0).toUpperCase() || "X"
@@ -22,15 +23,22 @@ export default function NavBar({
       <div className='hidden sm:block p-4'>
         <div className='flex justify-end'>
           <div className='relative rounded-full bg-gray-100'>
-            {/* Button */}
-            <button 
-              onClick={() => handleClickProfileMenu()}
-              onBlur={e => {
-                if(e.relatedTarget?.ariaLevel !== `login-btn`) setShowProfileMenu(false)
-              }}
-            >
-              <span className='flex justify-center items-center font-semibold text-xl w-6 h-6 m-2'>{firstLetterCapitalized}</span>
-            </button>
+            {/* Button */
+              userLoaded ? (
+                <button 
+                  onClick={() => handleClickProfileMenu()}
+                  onBlur={e => {
+                    if(e.relatedTarget?.ariaLevel !== `login-btn`) setShowProfileMenu(false)
+                  }}
+                >
+                    <span className='flex justify-center items-center font-semibold text-xl w-6 h-6 m-2'>
+                      {firstLetterCapitalized}
+                    </span>
+                </button>
+              ) : (
+                <div className='w-6 h-6 m-2'></div>
+              )
+            }
 
             {/* Menu */}
             { showProfileMenu && 

@@ -7,11 +7,9 @@ import TaskFilters from '@/layouts/TaskFilters'
 export default function Headers({
   children,
   users = [],
-  priorities = [],
   actionModelCallback = () => {},
   priorityFilter = {},
   priorityFilterCallback = () => {},
-  statuses = [],
   statusFilter = 'all',
   statusFilterCallback = () => {},
 }) {
@@ -123,16 +121,13 @@ export default function Headers({
         closeModalCallback={() => setShowModal(false)}
         actionModelCallback={actionModelCallback}
         users={users}
-        priorities={priorities}
       />
 
       {
         showFilters &&
         <TaskFilters 
-          priorities={priorities}
           priorityFilter={priorityFilter}
           priorityFilterCallback={priorityFilterCallback}
-          statuses={statuses}
           statusFilter={statusFilter}
           statusFilterCallback={statusFilterCallback}
         />
