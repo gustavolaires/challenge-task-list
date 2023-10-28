@@ -1,42 +1,90 @@
 # challenge-task-list
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Requisitos
 
-## Getting Started
+* NodeJS
+* Git
 
-First, run the development server:
+## Como configurar
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone o projeto;
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`
+  git clone https://github.com/gustavolaires/challenge-task-list.git
+`
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+2. Acesse o diretório raiz do projeto;
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+`
+  cd challenge-task-list
+`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+3. Instale as dependências do projeto;
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+`
+  npm install
+`
 
-## Learn More
+4. Crie um arquivo **.env.local** para adicionar as variáveis de ambiente;
 
-To learn more about Next.js, take a look at the following resources:
+5. Crie um projeto na [plataforma do Firebase](https://firebase.google.com/?hl=pt) (Será necessário uma conta google);
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+6. Adicione o Firebase Authentication com os métodos de autenticação:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Google
+- Github
+- E-mail/Senha
 
-## Deploy on Vercel
+7. Adicione o Firebase Realtime Database;
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+8. Nas configurações do projeto firebase, em Contas de serviço, crie uma chave privada;
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+9. Adicione as seguintes variáveis de ambiente (**.env.local**) a partir do projeto firebase criado na plataforma:
+
+- NEXT_PUBLIC_FIREBASE_API_KEY
+- NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+- NEXT_PUBLIC_FIREBASE_PROJECT_ID
+- NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+- NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+- NEXT_PUBLIC_FIREBASE_APP_ID
+- NEXT_PRIVATE_DATABASE_URL
+- NEXT_PRIVATE_FIREBASE_ADMIN_TYPE
+- NEXT_PRIVATE_FIREBASE_ADMIN_PROJECT_ID
+- NEXT_PRIVATE_FIREBASE_ADMIN_PRIVATE_KEY_ID
+- NEXT_PRIVATE_FIREBASE_ADMIN_PRIVATE_KEY
+- NEXT_PRIVATE_FIREBASE_ADMIN_CLIENT_EMAIL
+- NEXT_PRIVATE_FIREBASE_ADMIN_CLIENT_ID
+- NEXT_PRIVATE_FIREBASE_ADMIN_AUTH_URI
+- NEXT_PRIVATE_FIREBASE_ADMIN_TOKEN_URI
+- NEXT_PRIVATE_FIREBASE_ADMIN_AUTH_PROVIDER_X509_CERT_URL
+- NEXT_PRIVATE_FIREBASE_ADMIN_CLIENT_X509_CERT_URL
+- NEXT_PRIVATE_FIREBASE_ADMIN_UNIVERSE_DOMAIN
+
+10. Execute o projeto localmente;
+
+`
+  npm run dev
+`
+
+11. Abra o seguinte o endereço [http://localhost:3000](http://localhost:3000) no seu navegador;
+
+12. Enjoy! :D
+
+## Observações
+
+Esse projeto foi implementado utilizando [Next.js](https://nextjs.org/) e [Firebase](https://firebase.google.com/?hl=pt).
+
+Bibliotecas utilizadas:
+
+- @heroicons/react
+- firebase
+- firebase-admin
+- moment
+- next
+- react
+- react-dom
+- react-firebase-hooks
+- react-hook-form
+- react-spinners
+- socket.io
+- socket.io-client
